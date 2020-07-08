@@ -6,6 +6,7 @@ from catalog.choices_str import *
 
 
 class Corpus(models.Model):
+    name = models.CharField(max_length=40)
     price = models.IntegerField(default=0)
     manufacturer = models.CharField(max_length=20, choices=manufacturer_choises)
     type_size = models.CharField(max_length=20, choices=type_size_choices)
@@ -19,4 +20,3 @@ class Corpus(models.Model):
     color = models.CharField(max_length=20, choices=color_choices)
     integrated_psu = models.BooleanField()
     number_of_compartments = models.IntegerField(default=1)
-    image = models.ImageField()

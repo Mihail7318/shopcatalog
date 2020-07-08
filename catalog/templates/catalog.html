@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style type="text/css">
+        table{
+        border-collapse: separate;
+        border-spacing:20px;
+        }
+        th, td {
+        font-family: "PT Sans","Helvetica","Arial",sans-serif;
+        font-size: 16px;
+        line-height: 1.42857;
+        color: #333;
+        padding:100px;
+        border: 1px solid #f0f0f0;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Каталог</title>
+    <resource></resource>
+</head>
+    <body>
+        <table>
+            {%for one in many%}
+                <tr>
+                    <th>
+                        {% load static %}
+                        <img src="{{ MEDIA_URL }}computer.png" alt="image">
+                        <p>{{one.name}}<p>
+                        <p>{{one.manufacturer}}<p>
+                        <p>{{one.type_size}}<p>
+                    </th>
+                </tr>
+            {%endfor%}
+        </table>
+    </body>
+</html>
