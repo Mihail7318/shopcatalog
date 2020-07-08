@@ -1,37 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-    <style type="text/css">
+    <meta charset="utf-8">
+    <style>
         table{
         border-collapse: separate;
-        border-spacing:20px;
+        border-spacing:10px;
         }
         th, td {
+        border: 1px solid #f0f0f0;
+        border-radius:10px;
         font-family: "PT Sans","Helvetica","Arial",sans-serif;
         font-size: 16px;
-        line-height: 1.42857;
         color: #333;
-        padding:100px;
-        border: 1px solid #f0f0f0;
+        padding:10px;
         }
+
     </style>
-    <meta charset="UTF-8">
     <title>Каталог</title>
-    <resource></resource>
 </head>
-    <body>
-        <table>
-            {%for one in many%}
-                <tr>
-                    <th>
-                        {% load static %}
-                        <img src="{{ MEDIA_URL }}computer.png" alt="image">
-                        <p>{{one.name}}<p>
-                        <p>{{one.manufacturer}}<p>
-                        <p>{{one.type_size}}<p>
-                    </th>
-                </tr>
-            {%endfor%}
-        </table>
-    </body>
+<body>
+<div>
+    <table align="right">
+        {%for one in many%}
+        <tr>
+            <th width="700px" height="100px" bgcolor="#FAFAFA">
+                <img align="left" height="100px" src="{{MEDIA_URL}}computer.png" alt="image">
+                <p align="left">{{one.name}} {{one.manufacturer}}, {{one.color}}<p>
+                <p align="left">[{{one.type_size}}, {{one.motherboard_form}}]<p>
+                <strong> {{one.price}}₽</strong>
+            </th>
+        </tr>
+        {%endfor%}
+    </table>
+</div>
+</body>
 </html>

@@ -9,4 +9,4 @@ from shop import settings
 
 def catalog(request) -> HttpResponse:
     lolerball = Corpus.objects.all()
-    return render(request, 'catalog.html', {'many': lolerball, 'MEDIA_URL': settings.MEDIA_URL})
+    return render(request, 'catalog.html', {'many': lolerball})
