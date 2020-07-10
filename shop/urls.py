@@ -20,5 +20,5 @@ from catalog.views import *
 from shop import settings
 
 urlpatterns = [
-    path('catalog/', catalog)
+    path('catalog/', catalog),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

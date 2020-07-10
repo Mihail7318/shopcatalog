@@ -48,7 +48,41 @@
           font: 1.5em arial, verdana, sans-serif;
           width: 960px;
           min-height: 100%;
-                 }
+        }
+        form {
+          position: relative;
+          width: 300px;
+          margin: 40px 10px auto;
+        }
+        input {
+          width: 100%;
+          height: 42px;
+          font-weight: bold;
+          padding-left: 10px;
+          border: 2px solid #A4A4A4;
+          border-radius: 5px;
+          outline: none;
+          background: #FAFAFA;
+          color: #9E9C9C;
+        }
+        button {
+          position: absolute;
+          top: 3px;
+          right: -12px;
+          width: 42px;
+          height: 42px;
+          border: none;
+          background: #7BA7AB;
+          cursor: pointer;
+        }
+        button:before {
+          content: "\21D2";
+          font-family: FontAwesome;
+          font-size: 16px;
+          color: #F9F0DA;
+        }
+
+
     </style>
     <title>Каталог</title>
 </head>
@@ -56,23 +90,30 @@
 <header class="container">
     <img height="75px" width="340px" src="{{MEDIA_URL}}dns-shop.webp">
 </header>
+
 <div class="main">
     <div class="div1">
+        <form action="/catalog/" method="get">
+            <input  type="text" name="q" value="{{search_value}}" placeholder="Поиск по корпусам">
+            <button type="submit"></button>
+        </form>
     </div>
+
     <div class="div2">
         <table align="right">
-            {%for one in many%}
+            {%for corpus in corpuses%}
             <tr>
                 <th width="700px" height="100px" bgcolor="#FAFAFA">
                     <img align="left" height="100px" src="{{MEDIA_URL}}computer.png" alt="image">
-                    <p align="left"> {{one.name}} {{one.manufacturer}}, {{one.color}}<p>
-                    <p align="left"><font size="2"> [{{one.type_size}}, {{one.motherboard_form}}, 2x USB 2.0]</font><p>
-                    <p align="right"><font size="5"> {{one.price}}₽ </font><p>
+                    <p align="left"> {{corpus.name}} {{corpus.manufacturer}}, {{corpus.color}}<p>
+                    <p align="left"><font size="2"> [{{corpus.type_size}}, {{corpus.motherboard_form}}, 2x USB 2.0]</font><p>
+                    <p align="right"><font size="5"> {{corpus.price}}₽ </font><p>
                 </th>
             </tr>
             {%endfor%}
         </table>
     </div>
 </div>
+
 </body>
 </html>
