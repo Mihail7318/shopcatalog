@@ -1,110 +1,48 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <style>
-        table{
-          border-collapse: separate;
-          border-spacing:10px;
-        }
-        th, td {
-          border: 1px solid #f0f0f0;
-          border-radius:10px;
-          font-family: "PT Sans","Helvetica","Arial",sans-serif;
-          font-size: 16px;
-          color: #333;
-          padding:10px;
-        }
-        .main{
-          width: 100%;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-        .container {
-          width: 100%;
-          max-width: 1200px;
-          background: #F7D358;
-          margin: 0 auto;
-        }
-        .div1{
-          width: 50%;
-          min-height: 150px;
-          height: 100%;
-          background: #F2F2F2;
-          float: left;
-        }
-        .div2{
-          width: 50%;
-          min-height: 150px;
-          background: #F2F2F2;
-          float: right;
-        }
-        #content {
-          background: #EEE;
-          border-left: 1px solid #000;
-          border-right: 1px solid #000;
-          padding: 0 20px 0 20px;
-          margin: auto;
-          font: 1.5em arial, verdana, sans-serif;
-          width: 960px;
-          min-height: 100%;
-        }
-        form {
-          position: relative;
-          width: 300px;
-          margin: 40px 10px auto;
-        }
-        input {
-          width: 100%;
-          height: 42px;
-          font-weight: bold;
-          padding-left: 10px;
-          border: 2px solid #A4A4A4;
-          border-radius: 5px;
-          outline: none;
-          background: #FAFAFA;
-          color: #9E9C9C;
-        }
-        button {
-          position: absolute;
-          top: 3px;
-          right: -12px;
-          width: 42px;
-          height: 42px;
-          border: none;
-          background: #7BA7AB;
-          cursor: pointer;
-        }
-        button:before {
-          content: "\21D2";
-          font-family: FontAwesome;
-          font-size: 16px;
-          color: #F9F0DA;
-        }
-
-
-    </style>
     <title>Каталог</title>
+    <style>
+          @import url("{% static "styles/style.css" %}");
+    </style>
 </head>
+
 <body>
 <header class="container">
-    <img height="75px" width="340px" src="{{MEDIA_URL}}dns-shop.webp">
+    <img height="75px" width="340px" src="{% static 'images/dns-shop.webp' %}">
 </header>
 
 <div class="main">
     <div class="div1">
-        <form action="/catalog/" method="get">
-            <input  type="text" name="q" value="{{search_value}}" placeholder="Поиск по корпусам">
-            <button type="submit"></button>
+        <form action="" name="search_form" method="get">
+            <input class="input1" type="text" name="q" value="{{search_value}}" placeholder="Поиск по корпусам">
+            <button class="search-button" type="submit"></button>
+        </form>
+        <form action="" name="filter_form" method="get">
+            <fieldset>
+            <legend>Цена</legend>
+            <input type="radio" name="q1" value="all">Все цены<br>
+            <input type="radio" name="q1" value="1">Менее 3000 ₽<br>
+            <input type="radio" name="q1" value="2">3001-4500 ₽<br>
+            <input type="radio" name="q1" value="3">4501-6000 ₽<br>
+            <input type="radio" name="q1" value="4">6001-10000 ₽<br>
+            <input type="radio" name="q1" value="5">10001-15000 ₽<br>
+            <input type="radio" name="q1" value="6">15001 и более ₽<br>
+            </fieldset>
+            <br>
+            <button class="submit-button" type="submit">Применить</button>
+            <button class="reset-button" type="reset">Сбросить</button>
         </form>
     </div>
-
     <div class="div2">
+        <p><strong>Корпуса </strong>{{corpuses|length}} ед. товара</p>
         <table align="right">
             {%for corpus in corpuses%}
             <tr>
                 <th width="700px" height="100px" bgcolor="#FAFAFA">
-                    <img align="left" height="100px" src="{{MEDIA_URL}}computer.png" alt="image">
+                    <img align="left" height="100px" src="{% static '/images/computer.png' %}" alt="image">
                     <p align="left"> {{corpus.name}} {{corpus.manufacturer}}, {{corpus.color}}<p>
                     <p align="left"><font size="2"> [{{corpus.type_size}}, {{corpus.motherboard_form}}, 2x USB 2.0]</font><p>
                     <p align="right"><font size="5"> {{corpus.price}}₽ </font><p>
@@ -114,6 +52,6 @@
         </table>
     </div>
 </div>
-
 </body>
+
 </html>
