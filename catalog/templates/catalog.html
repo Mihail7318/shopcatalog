@@ -4,9 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Каталог</title>
-    <style>
-          @import url("{% static "styles/style.css" %}");
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css'%}" >
 </head>
 
 <body>
@@ -16,24 +14,11 @@
 
 <div class="main">
     <div class="div1">
-        <form action="" name="search_form" method="get">
+        <form action="" method="get">
             <input class="input1" type="text" name="q" value="{{search_value}}" placeholder="Поиск по корпусам">
             <button class="search-button" type="submit"></button>
-        </form>
-        <form action="" name="filter_form" method="get">
-            <fieldset>
-            <legend>Цена</legend>
-            <input type="radio" name="q1" value="all">Все цены<br>
-            <input type="radio" name="q1" value="1">Менее 3000 ₽<br>
-            <input type="radio" name="q1" value="2">3001-4500 ₽<br>
-            <input type="radio" name="q1" value="3">4501-6000 ₽<br>
-            <input type="radio" name="q1" value="4">6001-10000 ₽<br>
-            <input type="radio" name="q1" value="5">10001-15000 ₽<br>
-            <input type="radio" name="q1" value="6">15001 и более ₽<br>
-            </fieldset>
-            <br>
-            <button class="submit-button" type="submit">Применить</button>
-            <button class="reset-button" type="reset">Сбросить</button>
+            {{priceform}}
+            <button class="submit-button" type="submit">Принять</button>
         </form>
     </div>
     <div class="div2">
