@@ -1,31 +1,43 @@
 from django import forms
-from catalog.choices_str import (PRICE_CHOICES, MANUFACTURER_CHOICES, GARANTY_CHOICES, TYPE_SIZE_CHOICES,
-                                 MOTHERBOARD_FORM_CHOICES)
+from static.data_src.choices_str import *
 
 
-class PriceForm(forms.Form):
+class FilterForm(forms.Form):
+
     price = forms.ChoiceField(label="Цена", choices=PRICE_CHOICES, widget=forms.RadioSelect(), required=False)
 
-
-class BrandForm(forms.Form):
     brand = forms.ChoiceField(label="Производитель", choices=MANUFACTURER_CHOICES,
                               widget=forms.CheckboxSelectMultiple(),
                               required=False)
 
-
-class GuaranteeForm(forms.Form):
     guarantee = forms.ChoiceField(label="Гарантия", choices=GARANTY_CHOICES,
                                   widget=forms.CheckboxSelectMultiple(),
                                   required=False)
+    type_size = forms.ChoiceField(label="Типоразмер", choices=TYPE_SIZE_CHOICES,
+                                  widget=forms.CheckboxSelectMultiple(),
+                                  required=False)
 
-
-class TypesizeForm(forms.Form):
-    typesize = forms.ChoiceField(label="Типоразмер", choices=TYPE_SIZE_CHOICES,
-                                 widget=forms.CheckboxSelectMultiple(),
-                                 required=False)
-
-
-class MotherboardForm(forms.Form):
     mother = forms.ChoiceField(label="Материнская плата", choices=MOTHERBOARD_FORM_CHOICES,
                                widget=forms.CheckboxSelectMultiple,
                                required=False)
+
+    psu = forms.ChoiceField(label="Расположение БП", choices=PSU_CHOICES,
+                            widget=forms.CheckboxSelectMultiple,
+                            required=False)
+
+    fans = forms.ChoiceField(label="Кулеры", choices=FANS_SET_CHOICES,
+                             widget=forms.CheckboxSelectMultiple,
+                             required=False)
+
+    illumination = forms.ChoiceField(label="Кулеры", choices=ILLUMINATION_CHOICES,
+                                     widget=forms.CheckboxSelectMultiple,
+                                     required=False)
+
+    color = forms.ChoiceField(label="Цвет", choices=COLOR_CHOICES,
+                              widget=forms.CheckboxSelectMultiple,
+                              required=False)
+
+    gamers = forms.ChoiceField(label="Для геймеров", choices=GAMERS_CHOICES,
+                               widget=forms.CheckboxSelectMultiple, required=False)
+
+    compartments = forms.CharField(label="Количество отсеков", required=False)

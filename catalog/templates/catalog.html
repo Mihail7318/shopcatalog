@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Каталог</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css'%}" >
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css'%}">
 </head>
 
 <body>
@@ -18,13 +18,8 @@
             <input class="input1" type="text" name="q" value="{{search_value}}" placeholder="Поиск по корпусам">
             <button class="search-button" type="submit"></button>
             <br>
-            {{priceform}}
+            {{FilterForm}}
             <br>
-            {{brandform}}
-            <br>
-            {{guaranteeform}}
-            <br>
-            {{typesizeform}}
             <button class="submit-button" type="submit">Принять</button>
         </form>
     </div>
@@ -35,9 +30,13 @@
             <tr>
                 <th width="700px" height="100px" bgcolor="#FAFAFA">
                     <img align="left" height="100px" src="{% static '/images/computer.png' %}" alt="image">
-                    <p align="left"> {{corpus.name}} {{corpus.manufacturer}}, {{corpus.color}}<p>
-                    <p align="left"><font size="2"> [{{corpus.type_size}}, {{corpus.motherboard_form}}, 2x USB 2.0]</font><p>
-                    <p align="right"><font size="5"> {{corpus.price}}₽ </font><p>
+                    <p align="left"> {{corpus.name}} {{corpus.manufacturer}}, {{corpus.color}}
+                    <p>
+                    <p align="left"><font size="2"> [{{corpus.type_size}}, {{corpus.motherboard_form}}, 2x USB
+                        2.0]</font>
+                    <p>
+                    <p align="right"><font size="5"> {{corpus.price}}₽ </font>
+                    <p>
                 </th>
             </tr>
             {%endfor%}
