@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from catalog.models import Corpus
-from catalog.forms import *
 
 
 # Create your views here.
@@ -62,17 +61,6 @@ def catalog(request) -> HttpResponse:
         if 'compartments' in request.GET and request.GET['compartments']:
             compartments = int(dict(request.GET)['compartments'][0])
             objects = objects.filter(number_of_compartments=compartments)
-    init_data = {"price": "",
-                 "brand": "",
-                 "type_size": "",
-                 "mother": "",
-                 "psu": "",
-                 "fans": "",
-                 "illumination": "",
-                 "color": ""
-                 }
-    filter_form = FilterForm(request.GET, initial=init_data)
     return render(request, 'catalog.html', {'corpuses': objects,
                                             'search_value': search_value,
-                                            'FilterForm': filter_form,
                                             })
