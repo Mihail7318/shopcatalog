@@ -1,5 +1,5 @@
 from django.db import models
-from catalog.choices_str import *
+from static.data_src.choices_str import *
 
 
 # Create your models here.
