@@ -7,6 +7,6 @@ from .models import Category
 
 
 class CategoryListView(generics.ListAPIView):
-    queryset = Category.objects.all()
+    queryset = Category.objects.order_by('position')
     serializer_class = CategoryListSerializer
 
