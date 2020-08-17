@@ -1,14 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from catalog.models import Corpus
+from catalog.models import Product
 
 
 # Create your views here.
 
 
 def catalog(request) -> HttpResponse:
-    objects = Corpus.objects.all()
+    objects = Product.objects.all()
     search_value = ""
 
     if request.method == "GET":
