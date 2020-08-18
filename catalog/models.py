@@ -3,7 +3,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=40)
-    position = models.IntegerField(name="position", max_length=255, verbose_name="Позиция")
+    position = models.IntegerField(name="position")
 
     def __str__(self):
         return self.name
@@ -17,6 +17,8 @@ class Attribute(models.Model):
     name = models.CharField(max_length=40)
     category = models.ManyToManyField(Category)
     value = models.ForeignKey(Value, on_delete=models.CASCADE)
+
+
 
 
 class Product(models.Model):
