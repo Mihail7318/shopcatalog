@@ -1,5 +1,7 @@
 # pull official base image
 FROM python:3.6
+MAINTAINER Nickolay Kuzmin <kng197@mail.ru>
+
 
 # set work directory
 WORKDIR /shopcatalog/

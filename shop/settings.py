@@ -63,11 +63,11 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'catalog',
         'USER': 'postgres',
         'PASSWORD': 'admin',
-        'HOST': '127.0.0.1',
+        'HOST': 'db',
         'PORT': '5432'
     }
 }
@@ -113,4 +113,3 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.abspath('catalog/templates/media/')
 
-MEDIA_URL = '/media/'

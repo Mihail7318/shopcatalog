@@ -8,13 +8,23 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=catalog
 
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+
   web:
     build: .
-    command:  python manage.py runserver 0.0.0.0:8000
-    volumes:
-    - .:/code
+    command: python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
     depends_on:
       - db
 
+  migration:
+    build: .
+    command: python manage.py migrate
+    links:
+      - db
+    depends_on:
+      - db
