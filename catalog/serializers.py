@@ -16,9 +16,8 @@ class ValueSerializer(serializers.ModelSerializer):
 
 
 class AttributeListSerializer(serializers.ModelSerializer):
-    value = ValueSerializer()
-
+    value = ValueSerializer(many=True)
 
     class Meta:
         model = Attribute
-        fields = "__all__"
+        fields = ['name', 'value']

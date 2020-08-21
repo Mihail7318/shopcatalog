@@ -12,13 +12,17 @@ class Category(models.Model):
 class Value(models.Model):
     value = models.CharField(max_length=40)
 
+    def __str__(self):
+        return self.value
+
 
 class Attribute(models.Model):
     name = models.CharField(max_length=40)
     category = models.ManyToManyField(Category)
-    value = models.ForeignKey(Value, on_delete=models.CASCADE)
+    value = models.ManyToManyField(Value)
 
-
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -26,4 +30,4 @@ class Product(models.Model):
     brand = models.CharField(max_length=40)
     price = models.IntegerField(default=0)
     description = models.TextField()
-    ctegory = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
