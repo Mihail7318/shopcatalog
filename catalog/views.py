@@ -11,9 +11,8 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategoryListSerializer
 
 
-
 class AttributeListView(APIView):
     def get(self, request, id_cat):
-        attr = Attribute.objects.filter(category__id=id_cat)
+        attr = Attribute.objects.filter(category__id=id_cat).order_by('position')
         serializer = AttributeListSerializer(attr, many=True)
         return Response(serializer.data)

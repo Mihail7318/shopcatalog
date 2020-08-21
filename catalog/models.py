@@ -11,6 +11,7 @@ class Category(models.Model):
 
 class Value(models.Model):
     value = models.CharField(max_length=40)
+    position = models.IntegerField()
 
     def __str__(self):
         return self.value
@@ -20,6 +21,7 @@ class Attribute(models.Model):
     name = models.CharField(max_length=40)
     category = models.ManyToManyField(Category)
     value = models.ManyToManyField(Value)
+    position = models.IntegerField()
 
     def __str__(self):
         return self.name

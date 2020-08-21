@@ -12,7 +12,7 @@ class CategoryListSerializer(serializers.ModelSerializer):
 class ValueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Value
-        fields = "__all__"
+        exclude = ['id']
 
 
 class AttributeListSerializer(serializers.ModelSerializer):
