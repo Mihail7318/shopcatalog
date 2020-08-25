@@ -24,4 +24,4 @@ class Product(models.Model):
     brand = models.CharField(name="brand", max_length=40)
     price = models.IntegerField(name="price", default=0)
     description = models.TextField()
-    ctegory = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
