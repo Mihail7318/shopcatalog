@@ -1,7 +1,8 @@
 from django.urls import path
 
-from . import views
+from .views import CreateUserAPIView
 
 urlpatterns = [
-    path('category/', views.CategoryListView.as_view()),
+    path('create/', CreateUserAPIView.as_view()),
 ]
+app_name = 'catalog'

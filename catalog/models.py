@@ -1,4 +1,6 @@
+from django.contrib.auth.models import BaseUserManager
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Category(models.Model):
@@ -25,3 +27,42 @@ class Product(models.Model):
     price = models.IntegerField(name="price", default=0)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+
+class CustomManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, phone_number, full_name=None):
+        user = self.model(phone_number=phone_number, full_name=full_name)
+        user.save()
+        return user
+
+    def create_user(self, phone_number, full_name=None):
+        return self._create_user(phone_number, full_name)
+
+    def create_superuser(self, phone_number, full_name=None):
+        return self._create_user(phone_number, full_name)
+
+
+class UserAccount(models.Model):
+    phone_number = PhoneNumberField(unique=True, null=False)
+    full_name = models.CharField(name="full_name", null=True, max_length=60, help_text="ФИО")
+    USERNAME_FIELD = 'phone_number'
+    REQUIRED_FIELDS = []
+    objects = CustomManager()
+
+    @property
+    def is_anonymous(self):
+        """
+        Always return False. This is a way of comparing User objects to
+        anonymous users.
+        """
+        return False
+
+    @property
+    def is_authenticated(self):
+        """
+        Always return True. This is a way to tell if the user has been
+        authenticated in templates.
+        """
+        return True
