@@ -47,6 +47,10 @@ class CustomManager(BaseUserManager):
 class UserAccount(models.Model):
     phone_number = PhoneNumberField(unique=True, null=False)
     full_name = models.CharField(name="full_name", null=True, max_length=60, help_text="ФИО")
+    otp = models.CharField(max_length=4, blank=True, null=True)
+    validated = models.BooleanField(default=False,
+                                    help_text='if it is true, that means user have validate opt correctly')
+
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = []
     objects = CustomManager()

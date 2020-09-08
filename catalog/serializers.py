@@ -11,6 +11,7 @@ class CategoryListSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta(object):
         model = UserAccount
-        fields = ('phone_number', 'full_name')
+        fields = ['phone_number', 'full_name']
