@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
-from .models import Attribute, Category, Value
+from .models import Attribute, Category, Value, Product
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = "__all__"
+        fields = ("name",)
 
 
 class ValueSerializer(serializers.ModelSerializer):
@@ -21,3 +21,10 @@ class AtributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attribute
         fields = ('name', 'values')
+
+
+class ProductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = ('name', 'brand', 'price', 'description')
