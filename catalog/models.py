@@ -31,3 +31,4 @@ class Product(models.Model):
     price = models.IntegerField(name="price", default=0)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    value = models.ManyToManyField(Value)
