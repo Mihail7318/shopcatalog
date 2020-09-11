@@ -31,6 +31,7 @@ class Product(models.Model):
     price = models.IntegerField(name="price", default=0)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="categories")
+    value = models.ManyToManyField(Value)
 
     def __str__(self):
         return self.brand
