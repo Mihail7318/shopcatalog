@@ -8,15 +8,21 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
-class Value(models.Model):
-    value = models.CharField(name="value", max_length=40)
-
-
 class Attribute(models.Model):
     name = models.CharField(name="name", max_length=40)
     category = models.ManyToManyField(Category)
-    value = models.ForeignKey(Value, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+class Value(models.Model):
+    value = models.CharField(name="value", max_length=40)
+    attribute = models.ForeignKey(Attribute, on_delete=models.CASCADE, related_name="values")
+
+    def __str__(self):
+        return self.value
+
+    
 
 
 class Product(models.Model):
