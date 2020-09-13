@@ -60,7 +60,7 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql',
 #        'NAME': 'catalog',
@@ -69,7 +69,7 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 #        'HOST': 'db',
 #        'PORT': '5432'
 #    }
-#}
+# }
 
 DATABASES = {
     'default': {
@@ -81,7 +81,6 @@ DATABASES = {
         'PORT': '5432'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -127,10 +126,16 @@ PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 AUTH_USER_MODEL = 'catalog.UserAccount'
 
 REST_FRAMEWORK = {
-   'DEFAULT_AUTHENTICATION_CLASSES': (
-       'rest_framework.authentication.TokenAuthentication',
-   ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
+
 import datetime
 
 JWT_AUTH = {
