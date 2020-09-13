@@ -1,7 +1,14 @@
 from rest_framework import serializers
 
-from .models import Attribute, Category, Value, Product
+from .models import (Category, UserAccount, Attribute, Category, Value, Product)
 
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta(object):
+        model = UserAccount
+        fields = ['phone_number', 'full_name']
 
 class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
