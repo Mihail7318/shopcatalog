@@ -1,5 +1,5 @@
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from rest_framework import status
 
@@ -16,7 +16,7 @@ class Otp:
         return key
 
     @classmethod
-    def validate_phone_send_otp(cls, phone_number):  # добавить проверку телефона по шаблону на вход
+    def validate_phone_send_otp(cls, phone_number):
 
         if not phone_number:
             return {'status': status.HTTP_400_BAD_REQUEST,
@@ -50,10 +50,11 @@ class Otp:
                     'detail': 'User not exist.'}
 
         otp = user.otp
-
-        if otp_sent == otp:
+        otp_lifetime = datetime.now() - user.creation_otp_time.replace(tzinfo=None)
+        if otp_sent == otp and otp_lifetime < timedelta(seconds=30):
             user.validated = True
             user.otp = None
+            user.creation_otp_time = None
             user.save()
             return {'status': status.HTTP_200_OK,
                     'detail': 'OTP matched.'}

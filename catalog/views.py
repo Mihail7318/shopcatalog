@@ -1,12 +1,12 @@
-from rest_framework import (generics, status, permissions)
+from rest_framework import generics
+from rest_framework import (status, permissions)
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import generics
 
 from catalog.utils.otp_controller import Otp
-from .models import Attribute, Category, Value, Product
-from .serializers import (CategoryListSerializer, UserSerializer, AtributeSerializer, ProductSerializer,
-                          ValueSerializer)
+from .models import Attribute, Category, Product
+from .serializers import (CategoryListSerializer, UserSerializer, AtributeSerializer, ProductSerializer)
+
 
 class CreateUserAPIView(APIView):
     serializer_class = UserSerializer
