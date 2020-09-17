@@ -58,7 +58,7 @@ class UserAccount(models.Model):
     full_name = models.CharField(name="full_name", null=True, max_length=60, help_text="ФИО")
     otp = models.CharField(max_length=4, blank=True, null=True)
     creation_otp_time = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, unique=False)
-    validated = models.BooleanField(default=False)  # ПОМЕНЯТЬ НА ISACTIVE
+    is_active = models.BooleanField(default=False)
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = []
     objects = CustomManager()

@@ -126,8 +126,8 @@ PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 AUTH_USER_MODEL = 'catalog.UserAccount'
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
     'catalog.utils.backends.jwtbackend.JWTBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 REST_FRAMEWORK = {

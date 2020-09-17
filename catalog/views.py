@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from .models import Attribute, Category, Product, UserAccount
 from .serializers import (CategoryListSerializer, UserSerializer, AtributeSerializer, ProductSerializer)
 from .utils.controllers.otp_controller import OtpController
+from django.contrib.auth import logout
 
 
 class ValidatePhoneSendOTP(APIView):
@@ -18,21 +19,21 @@ class ValidatePhoneSendOTP(APIView):
         return Response(OtpController.validate_phone_send_otp(phone_number=phone_number))
 
 
-def val(request):
-    phone_number: str = (request.GET.get('phone_number')).replace(' ', '+')
-    user = authenticate(phone_number=phone_number)
+class Val(APIView):
+    permission_classes = (permissions.AllowAny,)
 
-    if user is not None:
-        if user.validated:
+    def post(self, request):
+        phone_number: str = request.data.get('phone_number')
+        otp_sent: str = request.data.get('otp')
+        user = authenticate(phone_number=phone_number, otp_sent=otp_sent)
+
+        if user is not None:
             login(request, user)
             return JsonResponse({'status': status.HTTP_200_OK,
                                  'detail': 'success auth'})
         else:
             return JsonResponse({'status': status.HTTP_400_BAD_REQUEST,
-                                 'detail': 'disabled account'})
-    else:
-        return JsonResponse({'status': status.HTTP_400_BAD_REQUEST,
-                             'detail': 'invalid login'})
+                                 'detail': 'invalid login'})
 
 
 class CreateUserAPIView(APIView):
@@ -46,26 +47,28 @@ class CreateUserAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-# region
-class CategoryListView(generics.ListAPIView):
-    queryset = Category.objects.order_by('position')
-    serializer_class = CategoryListSerializer
+def get_user_id(request):
+    return JsonResponse({"user_id": request.session.get('_auth_user_id')})
 
 
-class AtributeView(APIView):
-    def get(self, request, idcat):
-        attr = Attribute.objects.prefetch_related('values').filter(category__id=idcat)
-        serializer = AtributeSerializer(attr, many=True)
-        return Response(serializer.data)
+def out(request):
+    logout(request)
+    return JsonResponse({"logout": True})
 
+    # region
+    class CategoryListView(generics.ListAPIView):
+        queryset = Category.objects.order_by('position')
+        serializer_class = CategoryListSerializer
 
-class ProductView(APIView):
-    def get(self, request, pk):
-        products = Product.objects.filter(category__id=pk)
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
-# endregion
-# import jwt
-#
-# encoded_jwt = jwt.encode({'phone_number': cls.phone_number}, 'U*#u1u821ek213#(K', algorithm='HS256')
-#         user_details = {'token': encoded_jwt}
+    class AtributeView(APIView):
+        def get(self, request, idcat):
+            attr = Attribute.objects.prefetch_related('values').filter(category__id=idcat)
+            serializer = AtributeSerializer(attr, many=True)
+            return Response(serializer.data)
+
+    class ProductView(APIView):
+        def get(self, request, pk):
+            products = Product.objects.filter(category__id=pk)
+            serializer = ProductSerializer(products, many=True)
+            return Response(serializer.data)
+    # endregion
