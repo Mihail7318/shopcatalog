@@ -6,7 +6,7 @@ from rest_framework import status
 from catalog.models import UserAccount
 
 
-class Otp:
+class OtpController:
 
     @staticmethod
     def _send_otp(phone_number):
@@ -17,7 +17,6 @@ class Otp:
 
     @classmethod
     def validate_phone_send_otp(cls, phone_number):
-
         if not phone_number:
             return {'status': status.HTTP_400_BAD_REQUEST,
                     'detail': 'Phone number is not given in post request.'}
@@ -38,6 +37,7 @@ class Otp:
 
     @classmethod
     def validate_otp(cls, phone_number, otp_sent):
+        print("validate otp ! WORKKK")
 
         if not (phone_number and otp_sent):
             return {'status': status.HTTP_400_BAD_REQUEST,
@@ -61,4 +61,4 @@ class Otp:
 
         else:
             return {'status': status.HTTP_400_BAD_REQUEST,
-                    'detail': 'OTP incorrect.'}
+                    'detail': 'OTP incorrect or lifetime is end.'}

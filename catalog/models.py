@@ -10,12 +10,14 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Attribute(models.Model):
     name = models.CharField(name="name", max_length=40)
     category = models.ManyToManyField(Category)
 
     def __str__(self):
         return self.name
+
 
 class Value(models.Model):
     value = models.CharField(name="value", max_length=40)
@@ -24,13 +26,14 @@ class Value(models.Model):
     def __str__(self):
         return self.value
 
-    
+
 class Product(models.Model):
     name = models.CharField(name="name", max_length=40)
     brand = models.CharField(name="brand", max_length=40)
     price = models.IntegerField(name="price", default=0)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="categories")
+
     def __str__(self):
         return self.brand
 
@@ -55,8 +58,7 @@ class UserAccount(models.Model):
     full_name = models.CharField(name="full_name", null=True, max_length=60, help_text="ФИО")
     otp = models.CharField(max_length=4, blank=True, null=True)
     creation_otp_time = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, unique=False)
-    validated = models.BooleanField(default=False,
-                                    help_text='if it is true, that means user have validate opt correctly')
+    validated = models.BooleanField(default=False)  # ПОМЕНЯТЬ НА ISACTIVE
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = []
     objects = CustomManager()
