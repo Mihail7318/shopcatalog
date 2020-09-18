@@ -25,10 +25,8 @@ class AtributeView(APIView):
 
 
 class ProductView(APIView):
-
     def get(self, request, pk):
         query = self.request.GET.get('q')
-
         brand = self.request.GET.get('brand')
         q_list = Q(category__id=pk)
         if not brand:
@@ -40,8 +38,15 @@ class ProductView(APIView):
         if query:
             decoded = json.loads(query)
             for k, v in decoded.items():
-                print(k, v)
-                products = products.filter(Q(value__value=v) & Q(value__attribute__id=k))
+                vs = str(v)
+                if vs.find("-") != -1:
+                    min = vs[0:vs.find("-")]
+                    max = vs[vs.find("-")+1:len(vs)]
+                    print(min)
+                    print(max)
+                    products = products.filter(Q(value__value__gte=min) & Q(value__value__lte=max) & Q(value__attribute__id=k))
+                else:
+                    products = products.filter(Q(value__value=v) & Q(value__attribute__id=k))
         serializer = ProductSerializer(products, many=True)
         print(products.query)
         return Response(serializer.data)
