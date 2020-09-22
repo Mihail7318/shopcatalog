@@ -24,7 +24,7 @@ class AtributeSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-
+    value = ValueSerializer(many=True)
     class Meta:
         model = Product
-        fields = ('name', 'brand', 'price', 'description')
+        fields = ('name', 'brand', 'price', 'description', 'value')

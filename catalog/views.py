@@ -43,24 +43,28 @@ class ProductView(APIView):
                     q_list.add(Q(price__lte=max), Q.AND)
             else:
                 q_list.add(Q(price=price), Q.AND)
-        product = Product.objects.filter(q_list)
+        prd = Product.objects.filter(q_list)
         if query:
             decoded = json.loads(query)
             print(decoded)
+            ls = Q()
             for k, v in decoded.items():
                 print(k, v)
                 if type(v) == dict:
                     print("dict")
-                    q_list.add(Q(value__attribute__id=k), Q.AND)
+                    #q_list.add(Q(value__attribute__id=k), Q.AND)
+                    prd = prd.filter(value__attribute__id=k)
                     if 'min' in v.keys():
                         min = v['min']
-                        prd = product.filter(value__value__gte = min)
+                        ls.add(Q(value__value__gte=min), Q.AND)
+                        #prd = product.filter(value__value__gte=min)
                     if 'max' in v.keys():
                         max = v['max']
-                        prd = product.filter(value__value__lte=max)
-
+                        ls.add(Q(value__value__lte=max),Q.AND)
+                        #prd = product.filter(value__value__lte=max)
+                    prd = prd.filter(ls)
                 else:
-                    prd = product.filter(Q(value__value=v) & Q(value__attribute__id=k))
+                    prd = prd.filter(Q(value__value=v) & Q(value__attribute__id=k))
 
         print(q_list)
         #prd = Product.objects.filter(q_list)
