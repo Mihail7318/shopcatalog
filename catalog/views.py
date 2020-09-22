@@ -28,27 +28,40 @@ class ProductView(APIView):
     def get(self, request, pk):
         query = self.request.GET.get('q')
         brand = self.request.GET.get('brand')
+        price = self.request.GET.get('price')
         q_list = Q(category__id=pk)
-        if not brand:
-            print("none")
-        else:
+        if price:
+            pr = json.loads(price)
+            if type(pr) == dict:
+                if 'min' in pr.keys():
+                    min = pr['min']
+                    q_list.add(Q(price__gte=min), Q.AND)
+                if 'max' in pr.keys():
+                    max = pr['max']
+                    q_list.add(Q(price__lte=max), Q.AND)
+            else:
+                q_list.add(Q(price=price), Q.AND)
+        if brand:
             q_list.add(Q(brand=brand), Q.AND)
-        products = Product.objects.all().filter(q_list)
-
         if query:
             decoded = json.loads(query)
+            print(decoded)
             for k, v in decoded.items():
-                vs = str(v)
-                if vs.find("-") != -1:
-                    min = vs[0:vs.find("-")]
-                    max = vs[vs.find("-")+1:len(vs)]
-                    print(min)
-                    print(max)
-                    products = products.filter(Q(value__value__gte=min) & Q(value__value__lte=max) & Q(value__attribute__id=k))
+                print(k,v)
+                if type(v) == dict:
+                    print("dict")
+                    q_list.add(Q(value__attribute__id=k), Q.AND)
+                    if 'min' in v.keys():
+                        min = v['min']
+                        q_list.add(Q(value__value__gte=min), Q.AND)
+                    if 'max' in v.keys():
+                        max = v['max']
+                        q_list.add(Q(value__value__lte=max), Q.AND)
                 else:
-                    products = products.filter(Q(value__value=v) & Q(value__attribute__id=k))
-        serializer = ProductSerializer(products, many=True)
-        print(products.query)
+                    q_list.add(Q(value__value=v) & Q(value__attribute__id=k))
+        prd = Product.objects.filter(q_list)
+        serializer = ProductSerializer(prd, many=True)
+        print(prd.query)
         return Response(serializer.data)
 
 
