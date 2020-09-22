@@ -1,12 +1,16 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from rest_framework import (status, permissions, generics)
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Attribute, Category, Product, UserAccount
 from .serializers import (CategoryListSerializer, UserSerializer, AtributeSerializer, ProductSerializer)
 from .utils.controllers.otp_controller import Otp
+from .utils.jwt.authentication import JWTAuthentication
+from .utils.jwt.token_util import generate_access_token, generate_refresh_token
 
 
 class ValidatePhoneSendOTP(APIView):
@@ -23,43 +27,47 @@ class ValidateOTPLogin(APIView):
     def post(self, request):
         phone: str = request.data.get('phone_number')
         otp_sent: str = request.data.get('otp')
-        validate_info = Otp.check_otp(phone, otp_sent)
+        validate_info = Otp.check_otp(phone_number=phone, otp_sent=otp_sent)
 
         if validate_info['status'] is False:
             return JsonResponse({'status': status.HTTP_400_BAD_REQUEST,
                                  'detail': validate_info['detail']})
 
-        user = authenticate(phone_number=phone)
-        if user is None:
-            return JsonResponse({'status': status.HTTP_400_BAD_REQUEST,
-                                 'detail': 'invalid login'})
+        user = UserAccount.objects.filter(phone_number=phone).first()
+        serialized_user = UserSerializer(user).data
 
+        access_token = generate_access_token(user)
+        refresh_token = generate_refresh_token(user)
+
+        response = Response()
+        response.set_cookie(key='refresh_token', value=refresh_token, httponly=True)
+        response.data = {
+            'access_token': access_token,
+            'user': serialized_user,
+        }
         login(request, user)
-        return JsonResponse({'status': status.HTTP_200_OK,
-                             'detail': 'success auth'})
+        return response
+
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def profile(request):
+    user = request.user
+    serialized_user = UserSerializer(user).data
+    return Response({'user': serialized_user})
 
 
 class CreateUserAPIView(APIView):
     serializer_class = UserSerializer
 
     def post(self, request):
+        me = authenticate(request)
         user = request.POST.dict()
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-def testfunk(request):
-    return JsonResponse({"user": request.user.id,
-                         "TEXT": "BLABLABALA"})
-
-
-def out(request):
-    user = request.user.id
-    logout(request)
-    return JsonResponse({"logout": True,
-                         "user": user})
 
     # region
     class CategoryListView(generics.ListAPIView):
@@ -78,3 +86,5 @@ def out(request):
             serializer = ProductSerializer(products, many=True)
             return Response(serializer.data)
     # endregion
+
+

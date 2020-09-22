@@ -1,12 +1,14 @@
 from rest_framework import serializers
-
+from phonenumber_field.modelfields import PhoneNumberField
 from .models import (UserAccount, Attribute, Category, Value, Product)
 
 
 class UserSerializer(serializers.ModelSerializer):
+    phone_number = PhoneNumberField(unique=True, null=False)
+
     class Meta(object):
         model = UserAccount
-        fields = ['phone_number', 'full_name']
+        fields = ['phone_number']
 
 
 class CategoryListSerializer(serializers.ModelSerializer):

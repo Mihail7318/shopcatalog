@@ -1,4 +1,5 @@
 from django.contrib.auth.models import BaseUserManager
+from django.core.validators import RegexValidator
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -53,8 +54,12 @@ class CustomManager(BaseUserManager):
         return self._create_user(phone_number, full_name)
 
 
+phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$')
+
+
 class UserAccount(models.Model):
-    phone_number = PhoneNumberField(unique=True, null=False)
+    phone_number = models.CharField(validators=[phone_regex], max_length=17,
+                                    null=False, unique=True)
     full_name = models.CharField(name="full_name", null=True, max_length=60, help_text="ФИО")
     otp = models.CharField(max_length=4, blank=True, null=True)
     creation_otp_time = models.DateTimeField(auto_now=False, auto_now_add=False, null=True, unique=False)
