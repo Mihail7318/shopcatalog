@@ -100,7 +100,7 @@ ENV/
 
 # mypy
 .mypy_cache/
-generator.py
+catalog/generator.py
 .DS_Store
 *.sqlite3
 media/
