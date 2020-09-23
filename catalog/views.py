@@ -1,15 +1,16 @@
-from functools import reduce
 import csv
+import json
+import operator
+from functools import reduce
+
+from django.db.models import Q
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import json
-from django.db.models import Q
-import operator
 
-from .models import Attribute, Category, Value, Product
-from .serializers import (AtributeSerializer, CategoryListSerializer, ProductSerializer,
-                          ValueSerializer)
+from .models import Attribute, Category, Product, Value
+from .serializers import (AtributeSerializer, CategoryListSerializer,
+                          ProductSerializer, ValueSerializer)
 
 
 class CategoryListView(generics.ListAPIView):
@@ -52,22 +53,18 @@ class ProductView(APIView):
                 print(k, v)
                 if type(v) == dict:
                     print("dict")
-                    #q_list.add(Q(value__attribute__id=k), Q.AND)
                     prd = prd.filter(value__attribute__id=k)
                     if 'min' in v.keys():
                         min = v['min']
                         ls.add(Q(value__value__gte=min), Q.AND)
-                        #prd = product.filter(value__value__gte=min)
                     if 'max' in v.keys():
                         max = v['max']
-                        ls.add(Q(value__value__lte=max),Q.AND)
-                        #prd = product.filter(value__value__lte=max)
+                        ls.add(Q(value__value__lte=max), Q.AND)
                     prd = prd.filter(ls)
                 else:
                     prd = prd.filter(Q(value__value=v) & Q(value__attribute__id=k))
 
         print(q_list)
-        #prd = Product.objects.filter(q_list)
         serializer = ProductSerializer(prd, many=True)
         print(prd.query)
         return Response(serializer.data)
@@ -86,7 +83,7 @@ class TestView(APIView):
                     product = Product.objects.filter(id=i).first()
                     prt = product.value.add(value)
                     print(prt, i, "OK")
-                    i = i+1
+                    i = i + 1
                 prd = Product.objects.all()[:10]
                 serializer = ProductSerializer(prd, many=True)
                 print(prd.query)
@@ -95,7 +92,7 @@ class TestView(APIView):
         with open("catalog/product.csv", "r", newline="") as file:
             reader = csv.reader(file)
             for row in reader:
-                a = a+1
+                a = a + 1
                 category = Category.objects.filter(id=int(row[4]))
                 value = Value.objects.filter(id=row[5])
                 product = Product.objects.create(
@@ -105,7 +102,7 @@ class TestView(APIView):
                     description=row[3],
                     category_id=category.first().id,
                 )
-                print (a, "in", 5000)
+                print(a, "in", 5000)
                 print(product, "OK")
         prd = Product.objects.all()[:10]
         serializer = ProductSerializer(prd, many=True)

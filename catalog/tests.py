@@ -1,8 +1,9 @@
-from catalog.models import Attribute, Category, Value
 from django.test import TestCase
 # Create your tests here.
 from django.urls import reverse
 from rest_framework.test import APITestCase
+
+from catalog.models import Attribute, Category, Value
 
 
 class TestAttributeListAPIView(APITestCase):

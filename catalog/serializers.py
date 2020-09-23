@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Attribute, Category, Value, Product
+from .models import Attribute, Category, Product, Value
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
