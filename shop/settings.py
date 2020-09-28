@@ -81,7 +81,7 @@ PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
 AUTH_USER_MODEL = 'catalog.UserAccount'
 
-REFRESH_TOKEN_SECRET = "#(@JDi32dji2ji3dkoKQWkdwqk21#"
+REFRESH_TOKEN_SECRET = '#(@JDi32dji2ji3dkoKQWkdwqk21#'
 
 AUTHENTICATION_BACKENDS = [
     'catalog.utils.jwt.authentication.JWTAuthentication',
@@ -91,6 +91,5 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
     )
 }

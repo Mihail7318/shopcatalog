@@ -1,16 +1,18 @@
-from django.contrib.auth import authenticate, login
+import jwt
+from django.contrib.auth import login
 from django.http import JsonResponse
 from rest_framework import (status, permissions, generics)
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from shop import settings
 from .models import Attribute, Category, Product, UserAccount
 from .serializers import (CategoryListSerializer, UserSerializer, AtributeSerializer, ProductSerializer)
 from .utils.controllers.otp_controller import Otp
 from .utils.jwt.authentication import JWTAuthentication
-from .utils.jwt.token_util import generate_access_token, generate_refresh_token
+from .utils.jwt.token_util import generate_access_token, generate_refresh_token, refresh_access_token
 
 
 class ValidatePhoneSendOTP(APIView):
@@ -58,11 +60,27 @@ def profile(request):
     return Response({'user': serialized_user})
 
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def refresh_obtain_tokens(request):
+    response = Response()
+    refresh_token_payload = jwt.decode(
+        request.COOKIES.get("refresh_token"), settings.REFRESH_TOKEN_SECRET, algorithms=['HS256'])
+
+    user = UserAccount.objects.filter(phone_number=refresh_token_payload.get('phone_number')).first()
+    serialized_user = UserSerializer(user).data
+    response.data = {
+        'access_token': refresh_access_token(request.COOKIES.get("refresh_token")),
+        'user': serialized_user,
+    }
+    response.set_cookie(key='refresh_token', value=generate_refresh_token(user), httponly=True)
+    return response
+
+
 class CreateUserAPIView(APIView):
     serializer_class = UserSerializer
 
     def post(self, request):
-        me = authenticate(request)
         user = request.POST.dict()
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
@@ -86,5 +104,3 @@ class CreateUserAPIView(APIView):
             serializer = ProductSerializer(products, many=True)
             return Response(serializer.data)
     # endregion
-
-
