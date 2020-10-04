@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from .models import Category, Attribute, Value, Product, UserAccount
 
 
